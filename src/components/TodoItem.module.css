@@ -1,0 +1,24 @@
+.todo {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 1em;
+}
+
+.todo .todo-title {
+  font-weight: bold;
+  width: 50%;
+  padding-right: 1em;
+}
+
+.todo.done .todo-title {
+  text-decoration: line-through;
+}
+
+.todo .todo-date {
+  padding-right: 1em;
+}
+
+.todo .todo-done {
+  padding-right: 1em;
+}
