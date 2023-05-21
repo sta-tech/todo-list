@@ -6,7 +6,7 @@ import Todo from "../models/todo";
 import classes from './TodoItem.module.css';
 import { ChangeEvent } from "react";
 import { useDispatch } from "react-redux";
-import todoListSlice, { setDone } from "../store/todo-list/slice";
+import { deleteTodo, setDone } from "../store/todo-list/slice";
 
 interface TodoItemProps {
   todo: Todo;
@@ -24,7 +24,7 @@ function TodoItem({ todo }: TodoItemProps) {
     dispatch(setDone(todo.id, isDone) as any);
   };
   const onRemoveClick = () => {
-    dispatch(todoListSlice.actions.removeItem(todo.id));
+    dispatch(deleteTodo(todo.id) as any);
   };
   return (
     <div className={rootClass}>

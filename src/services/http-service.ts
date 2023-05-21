@@ -1,5 +1,6 @@
 import ListResponse from "../models/list-response";
 import Todo from "../models/todo";
+import TodoCreateRequest from "../models/todo-create-request";
 import TodoUpdateDone from "../models/todo-update-done";
 
 class HttpService {
@@ -11,6 +12,21 @@ class HttpService {
       throw new Error("Fetching todos failed");
     }
     const data: ListResponse<Todo> = await response.json();
+    return data;
+  }
+
+  public async add(request: TodoCreateRequest): Promise<Todo> {
+    const response = await fetch(`${this.baseUrl}/todos`, {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify(request),
+    });
+    if (!response.ok) {
+      throw new Error("Creating todo failed");
+    }
+    const data: Todo = await response.json();
     return data;
   }
 
@@ -27,6 +43,15 @@ class HttpService {
     });
     if (!response.ok) {
       throw new Error("Updating todo failed");
+    }
+  }
+
+  public async delete(id: string): Promise<void> {
+    const response = await fetch(`${this.baseUrl}/todos/${id}`, {
+      method: 'DELETE',
+    });
+    if (!response.ok) {
+      throw new Error("Deleting todo failed");
     }
   }
 }

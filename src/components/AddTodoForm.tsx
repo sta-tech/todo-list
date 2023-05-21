@@ -3,8 +3,7 @@ import classes from './AddTodoForm.module.css';
 import { useDispatch } from 'react-redux';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import todoListSlice from '../store/todo-list/slice';
-import Todo from '../models/todo';
+import { createTodo } from '../store/todo-list/slice';
 
 function AddTodoForm() {
   const dispatch = useDispatch();
@@ -15,14 +14,7 @@ function AddTodoForm() {
   const onTodoSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (title.length > 0) {
-      const todo: Todo = {
-        id: crypto.randomUUID(),
-        title: title,
-        owner: 'statech',
-        dueDate: new Date().toISOString(),
-        done: false,
-      };
-      dispatch(todoListSlice.actions.addTodo(todo));
+      dispatch(createTodo(title, "statech", new Date(), false) as any);
       setTitle('');
     }
   }

@@ -2,6 +2,7 @@ import { AnyAction, Dispatch, createSlice } from "@reduxjs/toolkit";
 import TodoListState from "./todo-list-state";
 import Todo from "../../models/todo";
 import httpService from "../../services/http-service";
+import TodoCreateRequest from "../../models/todo-create-request";
 
 const initialState: TodoListState = {
   todos: [],
@@ -48,6 +49,26 @@ export function fetchTodos() {
   };
 }
 
+export function createTodo(title: string, owner: string, dueDate: Date, done: boolean) {
+  return async (dispatch: Dispatch<AnyAction>) => {
+    try {
+      const request: TodoCreateRequest = {
+        title: title,
+        owner: owner,
+        dueDate: dueDate.toISOString(),
+        done: done,
+      };
+      const item = await httpService.add(request);
+      if(item) {
+        dispatch(todoListSlice.actions.addTodo(item));
+      }
+    }
+    catch(error) {
+      console.error(error);
+    }
+  };
+}
+
 export function setDone(id: string, done: boolean) {
   return async (dispatch: Dispatch<AnyAction>) => {
     try {
@@ -61,6 +82,18 @@ export function setDone(id: string, done: boolean) {
       console.error(error);
     }
   };
+}
+
+export function deleteTodo(id: string) {
+  return async (dispatch: Dispatch<AnyAction>) => {
+    try {
+      await httpService.delete(id);
+      dispatch(todoListSlice.actions.removeItem(id));
+    }
+    catch(error) {
+      console.error(error);
+    }
+  }
 }
 
 export default todoListSlice;
